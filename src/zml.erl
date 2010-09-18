@@ -49,10 +49,11 @@ output_file_name(FName) ->
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-start_link() -> start().
+start_link() ->
+  start(),
+  {ok, self()}.
 
-start() ->
-  ets:new(zml_templates, [set, public, named_table]).
+start() -> ets:new(zml_templates, [set, public, named_table]).
 
 zml_global_options() -> application:get_all_env().
 
