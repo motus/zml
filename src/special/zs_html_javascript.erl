@@ -35,7 +35,7 @@
 
 -export([process/5]).
 
--include("zml_special_html.hrl").
+-include("special/zml_special_html.hrl").
 
 
 -define(JS_DEF(M,E,L),

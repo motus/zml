@@ -3,8 +3,8 @@
 
 % Main function
 -export([ compile_static_files/0, compile_static_files/1,
-          template_dir/2, template_file/2, template_string/3,
-          start/0, render/2, render/3 ]).
+          template_dir/1, template_file/1, template_string/2,
+          start/0, start_link/0, render/1, render/2 ]).
 
 -include_lib("kernel/include/file.hrl").
 
@@ -12,6 +12,7 @@
 -define(OPT_ENV(Desc),
         {proplists:get_value(Desc, Options),
          os:getenv(string:to_upper(atom_to_list(Desc)))}).
+
 
 compile_static_files() -> compile_static_files([]).
 
@@ -48,7 +49,17 @@ output_file_name(FName) ->
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-start() -> ets:new(zml_templates, [set, public, named_table]).
+start_link() -> start().
+
+start() ->
+  ets:new(zml_templates, [set, public, named_table]).
+
+zml_global_options() -> application:get_all_env().
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+template_dir(Dir) ->
+  template_dir(Dir, zml_global_options()).
 
 template_dir(Dir, Options) ->
   BaseDir = proplists:get_value(base_dir, Options, "."),
@@ -66,6 +77,11 @@ template_dir(Dir, Options) ->
     Err -> Err
   end.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+template_file(Dir) ->
+  template_file(Dir, zml_global_options()).
+
 template_file(FName, Options) ->
   BaseDir = proplists:get_value(base_dir, Options, "."),
   Path = BaseDir ++ "/" ++ FName,
@@ -77,6 +93,11 @@ template_file(FName, Options) ->
          ets:insert(zml_templates, {FName, Path, NewTs, NewTempl, IsStatic}),
          NewTempl
   end.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+template_string(Name, Str) ->
+  template_string(Name, Str, zml_global_options()).
 
 template_string(Name, Str, Options) ->
   {Templ, IsStatic} = compile_string(Str, Options),
@@ -109,6 +130,9 @@ get_template(Name, Options) ->
     Err -> {error, Err}
   end.
 
+render(Name, Data) ->
+  render(Name, Data, zml_global_options()).
+
 render(Name, Data, Options) ->
   case get_template(Name, Options) of
     {ok, Templ, true } -> Templ;
@@ -116,7 +140,8 @@ render(Name, Data, Options) ->
     Err -> Err
   end.
 
-render(Name, Options) -> render(Name, fake, Options).
+render(Name) ->
+  render(Name, fake, zml_global_options()).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

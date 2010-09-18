@@ -5,7 +5,7 @@
 
 -export([process/5]).
 
--include("zml_special_html.hrl").
+-include("special/zml_special_html.hrl").
 
 
 process(ID, Attr, _Children, AST, Options) ->

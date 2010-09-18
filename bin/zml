@@ -11,8 +11,8 @@ SCRIPT_PATH=`pwd`;
 popd  > /dev/null
 
 pushd . > /dev/null
-cd "$SCRIPT_PATH/../code/"
-./build -q
+cd "$SCRIPT_PATH/../"
+rebar compile
 popd > /dev/null
 
 if [ "$ZML_ZSS_LIBS" == "" ]
@@ -20,6 +20,6 @@ then
   export ZML_ZSS_LIBS="$SCRIPT_PATH/../lib"
 fi
 
-erl -pa "$SCRIPT_PATH/../code/ebin" \
+erl -pa "$SCRIPT_PATH/../ebin/" \
   -noshell -run zml compile_static_files $@ -run erlang halt
 

@@ -1,0 +1,21 @@
+
+{application, zml, [
+  {description, "ZML Template Language"},
+  {vsn, "2.0"},
+  {registered, []},
+  {modules, [
+    zml_app, zml_sup,
+    zml, zml_indent, zml_tag, zml_render,
+    zml_util, zml_util_file,
+    zss, zss_tokenizer, zss_parser,
+    zml_special_table,
+    zml_special_comment,
+    zml_special_verbatim,
+    zml_special_with,
+    zml_special_html,
+    zs_html_javascript,
+    zs_html_zss_images ]},
+  {applications, [kernel, stdlib]},
+  {mod, { zml_app, []}},
+  {env, []} ]}.
+

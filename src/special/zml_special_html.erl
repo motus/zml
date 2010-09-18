@@ -7,7 +7,8 @@
 
 -export([process_tree/3]).
 
--include("zml_special_html.hrl").
+-include("special/zml_special_html.hrl").
+
 -import(string, [to_lower/1, to_upper/1, join/2]).
 
 % Each processor is run in order and returns an updated AST.  The fold function
