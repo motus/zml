@@ -1,4 +1,3 @@
-
 {application, zml, [
   {description, "ZML Template Language"},
   {vsn, "0.2.1"},
@@ -16,6 +15,6 @@
     zs_html_javascript,
     zs_html_zss_images ]},
   {applications, [kernel, stdlib]},
-  {mod, { zml_app, []}},
+  {mod, {zml_app, []}},
   {env, []} ]}.
 
