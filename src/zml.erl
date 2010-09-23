@@ -78,10 +78,11 @@ template_file(FName, Options) ->
   {ok, FileInfo} = file:read_file_info(Path),
   NewTs = FileInfo#file_info.mtime,
   case ets:lookup(zml_templates, FName) of
-    [{FName, _Path, Ts, Templ, _IsStatic}] when Ts >= NewTs -> Templ;
+    [{FName, _Path, Ts, Templ, IsFileStatic}] when Ts >= NewTs ->
+         {ok, Templ, IsFileStatic};
     _ -> {NewTempl, IsStatic} = compile_file(Path, Options),
          ets:insert(zml_templates, {FName, Path, NewTs, NewTempl, IsStatic}),
-         NewTempl
+         {ok, NewTempl, IsStatic}
   end.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -114,7 +115,7 @@ get_template(Name, Options) ->
       end;
     [] ->
       case string:right(Name, 5) of
-        [_|".zml"] ->  {ok, template_file(Name, Options)};
+        [_|".zml"] -> template_file(Name, Options);
         _ -> {error, template_not_found, Name}
       end;
     Err -> {error, Err}
