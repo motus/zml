@@ -202,7 +202,7 @@ translate_ast_item([{var,_} = Var | T], Acc, _IsStatic) ->
 translate_ast_item([{{Name, _ID}, Type, Attributes, Children} | T], Acc, IsStatic) ->
   translate_ast_item([{Name, Type, Attributes, Children} | T], Acc, IsStatic);
 translate_ast_item([{with, Attr, Children} | T], Acc, _IsStatic) ->
-  {ChildAST, _IsStatic} = translate_ast_item(Children, [], true),
+  {ChildAST, _} = translate_ast_item(Children, [], true),
    % *with Attr truncated in the special handler:
   translate_ast_item(T, [{with, Attr, ChildAST} | Acc], false);
 translate_ast_item([{Name, _Type, Attributes, []} | T], Acc, IsStatic) ->
