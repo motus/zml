@@ -1,10 +1,15 @@
 
 -module(zml_indent).
--compile(export_all).
+
+-export([tokenize_string/1, tokenize_lines/1]).
+-export([get_tokenizer/1, parse_id/1, parse_id_spc/1]).
+
 -include("zml_tokenizer.hrl").
 
 tokenize_string(Str) ->
-  Lines = string:tokens(Str, "\n"), % FIXME: removes empty lines
+  tokenize_lines(string:tokens(Str, "\n")). % FIXME: removes empty lines
+
+tokenize_lines(Lines) ->
   {Res, []} = tokenize(Lines, -1, recursive, no_tokenizer, []),
   Res.
 

@@ -2,27 +2,16 @@
 -module(zml).
 
 % Main function
--export([ compile_static_files/0, compile_static_files/1,
+-export([ compile_static_files/1,
           template_dir/1, template_file/1, template_string/2,
           start/0, start_link/0, render/1, render/2 ]).
 
 -include_lib("kernel/include/file.hrl").
 
-
 -define(OPT_ENV(Desc),
         {proplists:get_value(Desc, Options),
          os:getenv(string:to_upper(atom_to_list(Desc)))}).
 
-
-compile_static_files() -> compile_static_files([]).
-
-compile_static_files([]) ->
-  {Template, IsStatic} = compile_stream(standard_io, []),
-  io:format("~s~n", [
-    case IsStatic of
-      true  -> Template;
-      false -> zml_render:render(Template, fake)
-    end]);
 
 compile_static_files(FLS) ->
   lists:foreach(fun(FName) ->
@@ -155,10 +144,6 @@ compile_file(InFile, Options) ->
     end,
   {ok, Bin} = file:read_file(InFile),
   compile_string(binary_to_list(Bin), Options2).
-
-compile_stream(Stream, Options) ->
-  Str = io:get_chars(Stream, "", 1024000),
-  compile_string(Str, Options).
 
 compile_string(Str, Options) ->
   Options2 = other_options(Options),
