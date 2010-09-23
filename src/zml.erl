@@ -69,8 +69,8 @@ template_dir(Dir, Options) ->
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-template_file(Dir) ->
-  template_file(Dir, zml_global_options()).
+template_file(FName) ->
+  template_file(FName, zml_global_options()).
 
 template_file(FName, Options) ->
   BaseDir = proplists:get_value(base_dir, Options, "."),

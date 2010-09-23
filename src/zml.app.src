@@ -1,7 +1,7 @@
 {application, zml, [
   {description, "ZML Template Language"},
   {vsn, "0.2.1"},
-  {registered, [zml_templates]},
+  {registered, []},
   {modules, [
     zml_app, zml_sup,
     zml, zml_indent, zml_tag, zml_render,
