@@ -14,8 +14,8 @@
     #home And|"Some text that will be here"| :br#how;
       #wrapper
         :table
-          *with#data
-            :tr :td ${val1}; :td ${val2}; :td ${val3};
+          *with#dummy
+            :tr :td ${id}; :td ${name};
         .title#betaTitle Do some great stuff!
         .subtitle You decide what we're doing today!
         .logo#betaLogo
